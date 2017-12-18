@@ -1,0 +1,278 @@
+#!/bin/sh
+
+# Author: Sam Protsenko
+
+prj=""
+dir="."
+
+# ------------------------------------------------------------------------------
+
+create_cscope_db_baremetal() {
+	cscope -b -q -k
+}
+
+create_cscope_db_userspace() {
+	cscope -b -q
+}
+
+create_cscope_db_kernel_omap() {
+	create_cscope_db_baremetal
+}
+
+create_cscope_db_kernel_x86() {
+	create_cscope_db_baremetal
+}
+
+create_cscope_db_uboot() {
+	create_cscope_db_baremetal
+}
+
+create_cscope_db_msp430() {
+	create_cscope_db_baremetal
+}
+
+# ------------------------------------------------------------------------------
+
+list_sources_baremetal() {
+	find . -type f -name "*.[chsS]" > cscope.files
+}
+
+list_sources_userspace() {
+	list_sources_baremetal
+	find . -type f -name '*.cpp' >> cscope.files
+}
+
+# Create "cscope.files" file with files common for all architectures
+__list_sources_kernel_common() {
+	find	$dir						\
+		-path "$dir/arch*"		-prune -o	\
+		-path "$dir/tmp*"		-prune -o	\
+		-path "$dir/Documentation*"	-prune -o	\
+		-path "$dir/scripts*"		-prune -o	\
+		-path "$dir/tools*"		-prune -o	\
+		-path "$dir/include/config*"	-prune -o	\
+		-path "$dir/usr/include*"	-prune -o	\
+		-type f						\
+		-not -name '*.mod.c'				\
+		-name "*.[chsS]" -print > cscope.files
+}
+
+list_sources_kernel_omap() {
+	__list_sources_kernel_common
+
+	find	$dir/arch/arm					\
+		-path "$dir/arch/arm/mach-*"	-prune -o	\
+		-path "$dir/arch/arm/plat-*"	-prune -o	\
+		-path "$dir/arch/arm/configs"	-prune -o	\
+		-path "$dir/arch/arm/kvm"	-prune -o	\
+		-path "$dir/arch/arm/xen"	-prune -o	\
+		-type f						\
+		-not -name '*.mod.c'				\
+		-name "*.[chsS]" -print >> cscope.files
+	find	$dir/arch/arm/mach-omap2/			\
+		$dir/arch/arm/plat-omap/			\
+		-type f						\
+		-not -name '*.mod.c'				\
+		-name "*.[chsS]" -print >> cscope.files
+}
+
+list_sources_kernel_x86() {
+	__list_sources_kernel_common
+
+	find	$dir/arch/x86					\
+		-path "$dir/arch/x86/configs"	-prune -o	\
+		-path "$dir/arch/x86/kvm"	-prune -o	\
+		-path "$dir/arch/x86/lguest"	-prune -o	\
+		-path "$dir/arch/x86/xen"	-prune -o	\
+		-type f						\
+		-not -name '*.mod.c'				\
+		-name "*.[chsS]" -print >> cscope.files
+}
+
+list_sources_uboot() {
+	find	$dir							\
+		-path "$dir/arch*"			-prune -o	\
+		-path "$dir/board*"			-prune -o	\
+		-path "$dir/configs*"			-prune -o	\
+		-path "$dir/include/configs*"		-prune -o	\
+		-path "$dir/doc*"			-prune -o	\
+		-path "$dir/test*"			-prune -o	\
+		-path "$dir/tools*"			-prune -o	\
+		-path "$dir/examples*"			-prune -o	\
+		-type f -name "*.[chsS]" -print > cscope.files
+	find	$dir/arch/arm						\
+		-path "$dir/arch/arm/mach-*"		-prune -o	\
+		-path "$dir/arch/arm/imx-common"	-prune -o	\
+		-type f -name "*.[chsS]" -print >> cscope.files
+	find	$dir/arch/arm/mach-omap2				\
+		-type f -name "*.[chsS]" -print >> cscope.files
+	find								\
+		$dir/board/ti/common/					\
+		$dir/board/ti/am57xx/					\
+		$dir/board/ti/dra7xx/					\
+		$dir/configs/am57xx_evm_nodt_defconfig			\
+		$dir/configs/am57xx_evm_defconfig			\
+		$dir/configs/dra7xx_evm_defconfig			\
+		$dir/include/configs/am57xx_evm.h			\
+		$dir/include/configs/ti_omap5_common.h			\
+		$dir/include/configs/ti_armv7_omap.h			\
+		$dir/include/configs/ti_armv7_common.h			\
+		-type f -name "*.[chsS]" -print >> cscope.files
+}
+
+list_sources_msp430() {
+	mcu=msp430g2553
+
+	# Listing MSP430 toolchain headers
+	list=$(ls -1 /usr/msp430/include/ | grep -vP 430.*.h | grep .*.h)
+	echo $list | sed 's/ /\n/g' | sed 's/^/\/usr\/msp430\/include\//g' \
+		> cscope.files
+	echo /usr/msp430/include/msp430.h >> cscope.files
+	echo /usr/msp430/include/${mcu}.h >> cscope.files
+
+	# Listing project files
+	find . -type f -name "*.[chsS]" >> cscope.files
+}
+
+# ------------------------------------------------------------------------------
+
+print_usage() {
+	echo "Usage: $(basename $0) [--external] project_type"
+	echo "   or: $(basename $0) --clean"
+	echo
+	echo "Arguments:"
+	echo "  --external - create index DB which can be used from outside"
+	echo "               of the project directory; in vim type:"
+	echo "                 :cs add ../project/cscope.out"
+	echo "                 :set tags+=../project/tags"
+	echo "  --clean    - remove all index files for project in current dir"
+	echo
+	echo "Project types:"
+	echo "  - baremetal     - Generic bare-metal application"
+	echo "  - userspace     - Generic user-space application"
+	echo "  - kernel_omap   - Linux kernel sources for OMAP platforms"
+	echo "  - kernel_x86    - Linux kernel sources for x86 arch"
+	echo "  - uboot         - AM57x EVM + DRA7 EVM boards"
+	echo "  - msp430        - MSP430 project"
+}
+
+remove_index_files() {
+	echo "---> Cleaning index files..."
+	rm -f cscope.files cscope.in.out cscope.out cscope.po.out tags
+}
+
+parse_args() {
+	if [ $# -lt 1 -o $# -gt 2 ]; then
+		echo "Error: Wrong arguments count" >&2
+		print_usage
+		exit 1
+	fi
+
+	if [ $# -eq 2 ]; then
+		if [ $1 = "--external" ]; then
+			dir="$PWD"
+			shift
+		else
+			echo "Error: Wrong argument #1" >&2
+			print_usage
+			exit 1
+		fi
+	fi
+
+	case "$1" in
+		"kernel_omap" | "kernel_x86" | "uboot" | "userspace" | \
+				"baremetal" | "msp430")
+			prj=$1
+			;;
+		"--clean")
+			remove_index_files
+			exit 0
+			;;
+		"--help")
+			print_usage
+			exit 0
+			;;
+		*)
+			echo "Error: Unknown argument $1" >&2
+			print_usage
+			exit 1
+			;;
+	esac
+}
+
+print_info() {
+	echo "[II] Project type: $prj"
+}
+
+list_sources() {
+	echo "---> Listing files..."
+	list_sources_$prj
+}
+
+create_cscope_db() {
+	if [ ! -f cscope.out ]; then
+		echo "---> Creating cscope DB..."
+	else
+		echo "---> Updating cscope DB..."
+	fi
+
+	create_cscope_db_$prj
+}
+
+create_ctags_db() {
+	if [ ! -f tags -o "$prj" = "userspace" -o "$prj" = "baremetal" ]; then
+		# There is no option to actually update CTags DB, so just
+		# recreate it
+		echo "---> Creating CTags DB..."
+		ctags -L cscope.files
+	else
+		# XXX: It takes too much time to create CTags DB from scratch
+		#      (there is no update option for CTags)
+		echo "---> Using old CTags DB..."
+	fi
+}
+
+cleanup() {
+	echo "---> Removing garbage..."
+	rm -f cscope.files
+}
+
+# ------------------------------------------------------------------------------
+
+check_linux_override() {
+	if [ "$prj" = "kernel_omap" -a -f scripts/tags.sh ]; then
+		echo "  [II] Using scripts/tags.sh for indexing..."
+
+		# Use absolute paths?
+		if [ "$dir" != "." ]; then
+			echo "    [II] Use absolute paths..."
+			abs_paths="O=."
+		else
+			echo "    [II] Use relative paths..."
+			abs_paths=""
+		fi
+
+		# Index only compiled files
+		if [ -f vmlinux ]; then
+			echo "    [II] Index only compiled files..."
+			compiled="COMPILED_SOURCE=1"
+		else
+			echo "    [II] Index not only compiled files..."
+			compiled=""
+		fi
+
+		echo "---> Start indexing..."
+		make $abs_paths SRCARCH=arm SUBARCH=omap2 $compiled cscope tags
+		exit 0
+	fi
+}
+
+# ------------------------------------------------------------------------------
+
+parse_args $*
+print_info
+#check_linux_override
+list_sources
+create_cscope_db
+create_ctags_db
+cleanup
