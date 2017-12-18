@@ -27,6 +27,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'joe-skb7/cscope-maps'
 Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'majutsushi/tagbar'
 
 call vundle#end()
 filetype plugin indent on
@@ -54,16 +55,18 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 " Mappings
+
 " ctags
-map <F3> :ts <C-r><C-W><CR>
+nmap <F2> :TagbarToggle<CR>
+nmap <F3> :ts <C-r><C-W><CR>
 " NERDTree
-map <F4> :set list!<CR>
-map <F5> :NERDTreeToggle<CR>
-map <F6> :vsp<CR>
+nmap <F4> :set list!<CR>
+nmap <F5> :NERDTreeToggle<CR>
+nmap <F6> :vsp<CR>
 " Delete all trailing spaces
-map <F7> :bnext<CR>
-map <F8> :bprevious<CR>
-map <F9> :ToggleWhitespace<CR>
-map <F10> :%s/\s\+$//<CR>
-map <F12> :q<CR>
+nmap <F7> :bnext<CR>
+nmap <F8> :bprevious<CR>
+nmap <F9> :ToggleWhitespace<CR>
+nmap <F10> :%s/\s\+$//<CR>
+nmap <F12> :q<CR>
 
