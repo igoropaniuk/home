@@ -5,11 +5,17 @@ set runtimepath+=~/.vim/bundle/Vundle.vim/
 set tabstop=8
 set number
 set cc=80
+set textwidth=79
 set t_Co=256
+
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 color Benokai
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
+set foldmethod=syntax
+set foldlevel=99
+
+syntax on
 " extra whitespaces etc
 highlight ExtraWhitespace ctermbg=red
 
@@ -28,6 +34,11 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'joe-skb7/cscope-maps'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'majutsushi/tagbar'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'vim-scripts/indentpython.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -50,12 +61,52 @@ let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#themes#molokai#palette = {}
 
+" SimplyFold
+let g:SimpylFold_docstring_preview=1
+
+" Autocompletion and higlight
+let g:ycm_autoclose_preview_window_after_completion=1
+let python_highlight_all=1
+
+" NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.so$', '\.o$', '\.a$']
+
 " CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
-" Mappings
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs=1
+
+" Flake8
+let no_flake8_maps = 1
+
+" Custom commands + functions
+" Mostly for C++ (Google codestyle) and Python
+function SetAllSpaces()
+	set expandtab ts=4 sw=4 ai
+	%retab!
+endfunction SetAllSpaces
+
+" C (kernel coding style)
+function SetAllTabs()
+	set noexpandtab ts=8 sw=8 ai
+	%retab!
+endfunction SetAllTabs
+
+command SpaceMode call SetAllSpaces()
+command TabMode call SetAllTabs()
+
+
+" Mappings
 " ctags
 nmap <F2> :TagbarToggle<CR>
 nmap <F3> :ts <C-r><C-W><CR>
@@ -69,4 +120,6 @@ nmap <F8> :bprevious<CR>
 nmap <F9> :ToggleWhitespace<CR>
 nmap <F10> :%s/\s\+$//<CR>
 nmap <F12> :q<CR>
-
+nmap <space> za
+"nmap <C-o>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+autocmd FileType python map <buffer> <C-o> :call Flake8()<CR>
