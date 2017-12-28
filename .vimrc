@@ -7,6 +7,7 @@ set number
 set cc=80
 set textwidth=79
 set t_Co=256
+set history=200
 
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 color Benokai
@@ -122,4 +123,4 @@ nmap <F10> :%s/\s\+$//<CR>
 nmap <F12> :q<CR>
 nmap <space> za
 "nmap <C-o>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-autocmd FileType python map <buffer> <C-o> :call Flake8()<CR>
+"autocmd FileType python map <buffer> <C-o> :call Flake8()<CR>
