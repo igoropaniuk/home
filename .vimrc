@@ -15,6 +15,7 @@ set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 set foldmethod=syntax
 set foldlevel=99
+set hlsearch
 
 syntax on
 " extra whitespaces etc
