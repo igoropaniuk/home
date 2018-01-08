@@ -1,0 +1,23 @@
+#!/bin/bash
+
+AM57_REPO_PATH=~/work/linaro/reps/am57xx
+MNT_PATH=/media/xdev/
+
+# unpack rootfs
+if [ -d "$MNT_PATH/rootfs" ]; then
+	cd $MNT_PATH/rootfs
+	gunzip -cd $AM57_REPO_PATH/gen_rootfs/filesystem.cpio.gz | sudo cpio -idm
+fi
+
+# U-boot + MLO
+if [ -d "$MNT_PATH/BOOT" ]; then
+	cd $MNT_PATH/BOOT
+	cp $AM57_REPO_PATH/u-boot/u-boot_HS.img u-boot.img
+	cp $AM57_REPO_PATH/u-boot/u-boot-spl_HS_MLO MLO
+fi
+
+sync
+
+cd $MNT_PATH
+sudo umount $MNT_PATH/BOOT
+sudo umount $MNT_PATH/rootfs
