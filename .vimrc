@@ -123,5 +123,7 @@ nmap <F9> :ToggleWhitespace<CR>
 nmap <F10> :%s/\s\+$//<CR>
 nmap <F12> :q<CR>
 nmap <space> za
+map <C-c> :s/^/\/\//<Enter>
+map <C-u> :s/^\/\///<Enter>
 "nmap <C-o>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "autocmd FileType python map <buffer> <C-o> :call Flake8()<CR>
