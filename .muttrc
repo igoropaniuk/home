@@ -1,0 +1,51 @@
+set realname = "Igor Opaniuk"
+set from = "igor.opaniuk@linaro.org"
+set use_from = yes
+set envelope_from = yes
+
+set smtp_url = "smtps://igor.opaniuk\@linaro.org@smtp.gmail.com:465/"
+set imap_user = "igor.opaniuk@linaro.org"
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set ssl_force_tls = yes
+
+set record=imaps://imap.gmail.com/Sent
+set postponed=imaps://imap.gmail.com/Drafts
+set header_cache=~/.mutt_cache
+unset record
+
+# G to get mail
+bind index G imap-fetch-mail
+set editor = "vim"
+set charset = "utf-8"
+set markers=no
+set signature=~/.sig
+set include=yes
+set forward_format="Fwd: %s"
+
+# Reading Mail
+set timeout=10
+set mail_check=5
+set sort=threads
+set sort_aux=date
+set move=no
+set mark_old=no
+ignore * # ignore all headers except for ...
+unignore Date: From: To: CC: Bcc: Subject:
+hdr_order Subject: Date: From: To: CC: Bcc:
+set index_format="%{%b %d} %-15.15L [%Z] %s" # custom index format
+
+
+# Pretty Colors
+color status white blue
+color index green  default ~N  # new
+color index red default ~D  # deleted
+color index brightmagenta default ~T  # tagged
+color index brightyellow default ~F  # flagged
+color header green default "^Subject:"
+color header yellow default "^Date:"
+color header yellow default "^To:"
+color header yellow default "^Cc:"
+color header yellow default "^Bcc:"
+color header yellow default "^From:"
+color header red default "^X-.*:"
