@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# $ sudo aptitude install git-email msmtp kdelibs5-data
+# ~/.msmtprc should created with such contents:
+
+# defaults
+# tls on
+# tls_trust_file /usr/share/kde4/apps/kssl/ca-bundle.crt
+# logfile ~/.msmtp.log
+#
+# account linaro
+#        host smtp.gmail.com
+#        port 587
+#        from igor.opaniuk@linaro.org
+#        auth on
+#        user igor.opaniuk@linaro.org
+#        password <my-pass>
+
+# [1] http://www.freedesktop.org/wiki/Software/PulseAudio/HowToUseGitSendEmail/
+# [2] http://www.denx.de/wiki/U-Boot/Patches
+# [3] Documentation/SubmittingPatches
+
+sender="Igor Opaniuk <igor.opaniuk@linaro.org>"
+
+print_usage()
+{
+    app=$(basename $0)
+
+    echo "Usage: $app --to \"name <mail>\" --cc \"name <mail>\" patch"
+    echo
+    echo "For patch series use somthing like:"
+    echo
+    echo "    $ git format-patch -4 -n --cover-letter -M -o outgoing/"
+    echo "    $ vim outgoing/0000-cover-letter.patch"
+    echo "    $ $app --to ... --cc ... outgoing/*"
+    echo
+    echo "Or for version 2 of patches:"
+    echo
+    echo '    $ git format-patch -4 -n --cover-letter -M
+--subject-prefix="PATCH v2" -o outgoing/'
+    echo
+    echo "For a single patch:"
+    echo
+    echo '    $ git format-patch -1 -n -M --subject-prefix="PATCH v3"'
+    echo
+    echo 'NOTE: For each new version of patchset you need to resend'
+    echo '      all patches from series, even if you only modified'
+    echo '      one patch'
+}
+
+if [ $# -eq 0 -o "$1" = "--help" ]; then
+    print_usage
+    exit 0
+fi
+
+git send-email                        \
+    --smtp-server /usr/bin/msmtp            \
+    --from "$sender"                \
+    --envelope-sender="$sender"            \
+    --suppress-cc=all                \
+    "$@"
