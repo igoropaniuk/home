@@ -5,7 +5,7 @@ set runtimepath+=~/.vim/bundle/Vundle.vim/
 set tabstop=8
 set number
 set cc=80
-set textwidth=79
+"set textwidth=79
 set t_Co=256
 set history=200
 
@@ -76,6 +76,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$', '\.so$', '\.o$', '\.a$']
 " CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_max_depth = 40
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -127,3 +128,5 @@ map <C-c> :s/^/\/\//<Enter>
 map <C-u> :s/^\/\///<Enter>
 "nmap <C-o>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "autocmd FileType python map <buffer> <C-o> :call Flake8()<CR>
+"
+nnoremap confr :source ~/.vimrc<CR>

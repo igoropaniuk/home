@@ -5,7 +5,7 @@ LINARODIR=$HOME/linaro
 export PATH=$LINARODIR/compilers/gcc-linaro-6.3.1-2017.05-x86_64_arm-eabi/bin:$PATH
 export CROSS_COMPILE=arm-eabi-
 export ARCH=arm
-export TI_SECURE_DEV_PKG=$LINARODIR/secdev/secdev-am57xx_lite_4.6.4
+#export TI_SECURE_DEV_PKG=$LINARODIR/secdev/secdev-am57xx_lite_4.6.4
 
-make am57xx_hs_evm_defconfig
+make am57xx_evm_defconfig
 make

@@ -1,5 +1,7 @@
 #!/bin/bash
 
-sudo fastboot flash xloader $PWD/u-boot-spl_HS_MLO
-sudo fastboot flash bootloader $PWD/u-boot_HS.img
+#sudo fastboot flash xloader $PWD/u-boot-spl_HS_MLO
+#sudo fastboot flash bootloader $PWD/u-boot_HS.img
+sudo fastboot flash xloader $PWD/MLO
+sudo fastboot flash bootloader $PWD/u-boot.img
 sudo fastboot reboot
