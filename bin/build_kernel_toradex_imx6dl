@@ -3,8 +3,9 @@
 TORADEXDIR=$HOME/toradex
 
 export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabi/bin:$PATH
+export PATH=$TORADEXDIR/reps/u-boot-toradex.git/tools:$PATH
 export CROSS_COMPILE=arm-linux-gnueabi-
 export ARCH=arm
 
 make colibri_imx6_defconfig
-make -j8 uImage
+make -j8 uImage LOADADDR=10008000
