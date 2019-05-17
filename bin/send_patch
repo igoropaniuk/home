@@ -20,7 +20,8 @@
 # [2] http://www.denx.de/wiki/U-Boot/Patches
 # [3] Documentation/SubmittingPatches
 
-sender="Igor Opaniuk <igor.opaniuk@linaro.org>"
+sender="Igor Opaniuk <igor.opaniuk@toradex.com>"
+# sender="Igor Opaniuk <igor.opaniuk@gmail.com>"
 
 print_usage()
 {

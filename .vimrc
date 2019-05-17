@@ -76,7 +76,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$', '\.so$', '\.o$', '\.a$']
 " CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_max_depth = 40
+let g:ctrlp_max_depth = 100
 
 " Syntastic
 set statusline+=%#warningmsg#

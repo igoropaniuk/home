@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//bin:$PATH
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+make colibri-imx8qxp_defconfig
+#make u-boot-dtb.imx
+make flash.bin
