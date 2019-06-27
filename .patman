@@ -1,0 +1,9 @@
+[alias]
+me: Igor Opaniuk <igor.opaniuk@gmail.com>
+
+[bounces]
+nxp = Zhikang Zhang <zhikang.zhang@nxp.com>
+
+[settings]
+verbose: True
+smtp_server: /usr/bin/msmtp
