@@ -7,5 +7,5 @@ export CROSS_COMPILE=aarch64-linux-gnu-
 export ARCH=arm
 
 make colibri-imx8qxp_defconfig
-#make u-boot-dtb.imx
-make flash.bin
+make u-boot-dtb.imx
+#make flash.bin
