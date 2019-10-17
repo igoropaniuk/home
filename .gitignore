@@ -4,6 +4,7 @@
 !.gitignore
 !bin
 !bin/*
+!bin/*/*
 !.vimrc
 !.muttrc
 !.patman

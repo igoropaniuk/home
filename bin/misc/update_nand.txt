@@ -1,0 +1,10 @@
+dhcp; tftpboot ${fdt_addr_r} ${board_name}/u-boot-nand.imx && nand erase.part u-boot1 && nand write ${fdt_addr_r} u-boot1 ${filesize} && nand erase.part u-boot2 && nand write ${fdt_addr_r} u-boot2 ${filesize}
+
+
+nandbcb bcbonly 0x00080000 0x00080000
+
+
+
+Colibri iMX7 # hab_auth_img 0x82000000 ${filesize} 0
+hab fuse not enabled
+
