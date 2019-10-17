@@ -9,3 +9,4 @@ export ARCH=arm
 #make -j20 colibri_imx7_emmc_defconfig
 make colibri_imx7_defconfig
 make
+

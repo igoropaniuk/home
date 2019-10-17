@@ -12,6 +12,7 @@ export CROSS_COMPILE=arm-linux-gnueabi-
 #export PATH=$TORADEXDIR/toolchain/gcc-linaro-5.2-2015.11-2-x86_64_arm-linux-gnueabihf/bin:$PATH
 
 make imx_v6_v7_defconfig
+#make multi_v7_defconfig
 #make colibri-imx6ull_defconfig
 #make -j1 uImage LOADADDR=10008000
 make -j8 zImage imx6ull-colibri-eval-v3.dtb imx6ull-colibri-wifi-eval-v3.dtb
