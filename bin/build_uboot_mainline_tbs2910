@@ -1,0 +1,10 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=~/.buildman-toolchains/gcc-7.3.0-nolibc/arm-linux-gnueabi/bin:$PATH
+export CROSS_COMPILE=arm-linux-gnueabi-
+export ARCH=arm
+
+make tbs2910_defconfig
+make

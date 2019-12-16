@@ -1,0 +1,5 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+sudo $TORADEXDIR/usb_recovery/imx8/mfgtools/uuu/uuu $1

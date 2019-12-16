@@ -5,6 +5,6 @@ TORADEXDIR=$HOME/toradex
 export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabi/bin:$PATH
 export CROSS_COMPILE=arm-linux-gnueabi-
 export ARCH=arm
-
 make colibri_imx6_defconfig
+#make imx6qdl_icore_mmc_defconfig
 make
