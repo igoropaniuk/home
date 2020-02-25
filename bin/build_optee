@@ -1,0 +1,18 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//bin:$PATH
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+make \
+	CFG_ARM64_core=y \
+	CFG_TEE_CORE_LOG_LEVEL=4 \
+	CROSS_COMPILE=aarch64-linux-gnu- \
+	CROSS_COMPILE_core=aarch64-linux-gnu- \
+	CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- \
+	CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- \
+	DEBUG=1 \
+	O=out/arm \
+	CFG_UART_BASE=0x5a070000 \
+	PLATFORM=imx-mx8qmmek

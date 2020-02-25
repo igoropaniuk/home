@@ -1,0 +1,30 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//bin:$PATH
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+OPTEE_OUT=$TORADEXDIR/reps/optee_os.git
+
+OPTEE_BIN=$OPTEE_OUT/out/arm/core/tee-header_v2.bin
+OPTEE_BIN_EXTRA1=$OPTEE_OUT/out/arm/core/tee-pager_v2.bin
+OPTEE_BIN_EXTRA2=$OPTEE_OUT/out/arm/core/tee-pageable_v2.bin
+
+cd imx-atf
+make PLAT=imx8qm bl31
+
+cd ..
+
+cp imx-atf/build/imx8qm/release/bl31.bin .
+cp $OPTEE_OUT/out/arm/core/tee.bin .
+
+make apalis-imx8qm_defconfig
+make u-boot-dtb.imx V=1
+
+# TEE_IMX8=y \
+# BL32=$OPTEE_BIN \
+# BL32_EXTRA1=$OPTEE_BIN_EXTRA1 \
+# BL32_EXTRA2=$OPTEE_BIN_EXTRA2 \
+# SPD=opteed bl31
