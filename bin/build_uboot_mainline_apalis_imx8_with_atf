@@ -6,18 +6,15 @@ export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//
 export CROSS_COMPILE=aarch64-linux-gnu-
 export ARCH=arm
 
-OPTEE_OUT=$TORADEXDIR/reps/imx-optee-os.git
-OPTEE_BIN=$OPTEE_OUT/out/arm/core/tee.bin
-
 if [ -d "./imx-atf" ]
 then
 	echo "Skipping downloading TF-A and SCFW"
 
 	cd imx-atf
-	make PLAT=imx8qm SPD=opteed bl31
+	make PLAT=imx8qm bl31
 	cd ..
 	cp imx-atf/build/imx8qm/release/bl31.bin .
-	cp $OPTEE_BIN .
+
 else
 	echo "Downloading and building TF-A..."
 	git clone https://github.com/ARM-software/arm-trusted-firmware imx-atf
