@@ -13,7 +13,8 @@ then
 	cd imx-atf
 	make PLAT=imx8qm bl31
 	cd ..
-	cp imx-atf/build/imx8qm/release/bl31.bin .
+	#cp imx-atf/build/imx8qm/release/bl31.bin .
+	cp ../trusted-firmware-a/build/imx8qm/release/bl31.bin .
 
 else
 	echo "Downloading and building TF-A..."

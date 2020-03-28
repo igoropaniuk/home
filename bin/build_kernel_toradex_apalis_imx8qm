@@ -1,0 +1,13 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export CROSS_COMPILE=aarch64-linux-gnu-
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu/bin:$PATH
+export ARCH=arm64
+
+make defconfig
+make -j4 Image freescale/fsl-imx8qm-apalis-eval.dtb modules
+cp arch/arm64/boot/Image ~/toradex/tftp/
+cp arch/arm64/boot/dts/freescale/fsl-imx8qm-apalis-eval.dtb ~/toradex/tftp
+#make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/

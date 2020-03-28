@@ -1,0 +1,37 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//bin:$PATH
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+if [ -d "./imx-atf" ]
+then
+	echo "Skipping downloading TF-A and SCFW"
+
+	cd imx-atf
+	make PLAT=imx8qx bl31
+	cd ..
+	cp ../trusted-firmware-a/build/imx8qx/release/bl31.bin .
+
+else
+	echo "Downloading and building TF-A..."
+	git clone -b imx_4.19.35_1.1.0 https://source.codeaurora.org/external/imx/imx-atf
+	cd imx-atf
+	make PLAT=imx8qx bl31
+
+	cd ..
+	echo "Downloading SCFW..."
+	wget https://github.com/toradex/meta-fsl-bsp-release/blob/toradex-sumo-4.14.78-1.0.0_ga-bringup/imx/meta-bsp/recipes-bsp/imx-sc-firmware/files/mx8qx-colibri-scfw-tcm.bin?raw=true
+	mv mx8qx-colibri-scfw-tcm.bin\?raw\=true mx8qx-colibri-scfw-tcm.bin
+	wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.0.bin
+	chmod +x firmware-imx-8.0.bin
+	./firmware-imx-8.0.bin
+
+	cp imx-atf/build/imx8qx/release/bl31.bin .
+	cp firmware-imx-8.0/firmware/seco/mx8qx-ahab-container.img .
+fi
+
+make colibri-imx8qxp_defconfig
+make u-boot-dtb.imx
