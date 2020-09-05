@@ -8,5 +8,5 @@ export CROSS_COMPILE=arm-linux-gnueabihf-
 export PATH=$TORADEXDIR/toolchain/gcc-linaro-5.2-2015.11-2-x86_64_arm-linux-gnueabihf/bin:$PATH
 
 make imx_v6_v7_defconfig
-make -j4 zImage imx6dl-colibri-eval-v3.dtb modules
+make -j4 zImage imx6dl-colibri-eval-v3.dtb imx6q-apalis-eval.dtb modules
 make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/

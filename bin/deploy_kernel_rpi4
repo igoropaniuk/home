@@ -1,0 +1,34 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+RPI_PATH=/mnt/rpi
+
+export ARCH=arm
+export CROSS_COMPILE=arm-linux-gnueabi-
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabi/bin:$PATH
+
+KERNEL=kernel7l
+CONFIG_LOCALVERSION="-v7l-MY_CUSTOM_KERNEL"
+
+sudo mkdir -p $RPI_PATH
+
+if grep -Fxq "$RPI_PATH" /proc/mounts
+then
+	echo "Already mounted"
+else
+	echo "Mounting sshfs..."
+	sudo sshfs -o default_permissions root@10.10.10.254:/ $RPI_PATH
+fi
+
+echo "Intalling modules..."
+#sudo make INSTALL_MOD_PATH=$RPI_PATH modules_install
+
+echo "Installing kernel and device trees..."
+sudo cp arch/arm/boot/zImage $RPI_PATH/boot/$KERNEL.img
+sudo cp arch/arm/boot/dts/*.dtb $RPI_PATH/boot/
+sudo cp arch/arm/boot/dts/overlays/*.dtb* $RPI_PATH/boot/overlays/
+sudo cp arch/arm/boot/dts/overlays/README $RPI_PATH/boot/overlays/
+sudo cp drivers/mmc/host/mmc_spi.ko $RPI_PATH/lib/modules/4.19.122-v7l+/kernel/drivers/mmc/host/mmc_spi.ko
+
+umount $RPI_PATH
+

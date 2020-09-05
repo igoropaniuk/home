@@ -27,5 +27,5 @@ else
 	cp firmware-imx-8.0/firmware/seco/mx8qx-ahab-container.img .
 fi
 
-make colibri-imx8qxp_defconfig
+make colibri-imx8x_defconfig
 make u-boot-dtb.imx

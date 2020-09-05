@@ -14,4 +14,4 @@ export PATH=$TORADEXDIR/toolchain/gcc-linaro-5.2-2015.11-2-x86_64_arm-linux-gnue
 make colibri_imx7_defconfig
 #make -j1 uImage LOADADDR=10008000
 make -j4 zImage imx7d-colibri-emmc-eval-v3.dtb modules
-make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/
+#make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/

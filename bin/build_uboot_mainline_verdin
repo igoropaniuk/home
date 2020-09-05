@@ -15,17 +15,16 @@ if [ -d "./imx-atf" ]
 then
 	#echo "Skipping downloading TF-A and SCFW"
 	cd imx-atf
-	make PLAT=imx8mm SPD=opteed bl31
+	make PLAT=imx8mm IMX_BOOT_UART_BASE=0x30860000 bl31
 
 	cd ..
 	cp imx-atf/build/imx8mm/release/bl31.bin .
 	cp $OPTEE_DIR/build.imx-mx8mmevk/tee.bin .
 else
 	echo "Downloading and building TF-A..."
-	#git clone -b imx_4.14.78_1.0.0_ga https://source.codeaurora.org/external/imx/imx-atf
 	git clone https://github.com/ARM-software/arm-trusted-firmware imx-atf
 	cd imx-atf
-	make PLAT=imx8mm SPD=opteed bl31
+	make PLAT=imx8mm IMX_BOOT_UART_BASE=0x30860000 bl31
 
 	cd ..
 	echo "Downloading SCFW..."

@@ -34,5 +34,5 @@ else
 	cp firmware-imx-8.0/firmware/seco/mx8qm-ahab-container.img .
 fi
 
-make apalis-imx8qm_defconfig
+make apalis-imx8_defconfig
 make u-boot-dtb.imx

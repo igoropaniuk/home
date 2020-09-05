@@ -6,6 +6,5 @@ export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//
 export CROSS_COMPILE=aarch64-linux-gnu-
 export ARCH=arm
 
-make PLAT=imx8qm bl31
-make PLAT=imx8qx bl31
-make PLAT=imx8mm IMX_BOOT_UART_BASE=0x30860000 bl31
+make apalis-imx8qm_defconfig
+make u-boot.bin
