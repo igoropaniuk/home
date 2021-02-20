@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu/bin:$PATH
+export KSCRIPTS=$TORADEXDIR/reps/linux-mainline.git/scripts
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+make imx8mm_evk_defconfig
+make

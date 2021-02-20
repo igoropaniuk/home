@@ -7,7 +7,4 @@ export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu/b
 export ARCH=arm64
 
 make defconfig
-make -j4 Image freescale/fsl-imx8qm-apalis-eval.dtb modules
-cp arch/arm64/boot/Image ~/toradex/tftp/
-cp arch/arm64/boot/dts/freescale/fsl-imx8qm-apalis-eval.dtb ~/toradex/tftp
-#make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/
+make -j4 Image.gz freescale/imx8qxp-apalis-eval.dtb freescale/imx8qm-apalis-eval.dtb freescale/imx8mm-verdin-wifi-dahlia.dtb freescale/imx8qxp-colibri-eval-v3.dtb freescale/imx8qm-apalis-v1.1-eval.dtb modules

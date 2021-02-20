@@ -1,0 +1,14 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu/bin:$PATH
+export KSCRIPTS=$TORADEXDIR/reps/linux-mainline.git/scripts
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+#LMPCFG=~/foundries.io/reps/lmp-8mmini-factory-igor.repo/layers/meta-lmp/meta-lmp-bsp/recipes-bsp/u-boot/u-boot-fio-mfgtool/imx8mmevk/lmp.cfg
+LMPCFG=~/foundries.io/reps/lmp-8mmini-factory-igor.repo/layers/meta-lmp/meta-lmp-bsp/recipes-bsp/u-boot/u-boot-fio/imx8mmevk/lmp.cfg
+$KSCRIPTS/kconfig/merge_config.sh $PWD/configs/imx8mm_evk_defconfig $LMPCFG
+#make imx8mm_evk_defconfig
+make

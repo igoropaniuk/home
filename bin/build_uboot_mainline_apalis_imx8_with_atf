@@ -6,33 +6,9 @@ export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//
 export CROSS_COMPILE=aarch64-linux-gnu-
 export ARCH=arm
 
-if [ -d "./imx-atf" ]
-then
-	echo "Skipping downloading TF-A and SCFW"
-
-	cd imx-atf
-	make PLAT=imx8qm bl31
-	cd ..
-	#cp imx-atf/build/imx8qm/release/bl31.bin .
-	cp ../trusted-firmware-a/build/imx8qm/release/bl31.bin .
-
-else
-	echo "Downloading and building TF-A..."
-	git clone https://github.com/ARM-software/arm-trusted-firmware imx-atf
-	cd imx-atf
-	make PLAT=imx8qm bl31
-
-	cd ..
-	echo "Downloading SCFW..."
-	wget https://github.com/toradex/meta-fsl-bsp-release/blob/toradex-sumo-4.14.78-1.0.0_ga-bringup/imx/meta-bsp/recipes-bsp/imx-sc-firmware/files/mx8qm-apalis-scfw-tcm.bin?raw=true
-	mv mx8qm-apalis-scfw-tcm.bin\?raw\=true mx8qm-apalis-scfw-tcm.bin
-	wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.0.bin
-	chmod +x firmware-imx-8.0.bin
-	./firmware-imx-8.0.bin
-
-	cp imx-atf/build/imx8qm/release/bl31.bin .
-	cp firmware-imx-8.0/firmware/seco/mx8qm-ahab-container.img .
-fi
+cp ../imx-scfw/src/scfw_export_mx8qm_b0/mx8qm-apalis-scfw-tcm.bin .
+cp ../imx-atf/build/imx8qm/release/bl31.bin .
+cp ../imx-seco-3.6.3/firmware/seco/mx8qmb0-ahab-container.img mx8qm-ahab-container.img
 
 make apalis-imx8_defconfig
-make u-boot-dtb.imx
+make -j4 u-boot-dtb.imx

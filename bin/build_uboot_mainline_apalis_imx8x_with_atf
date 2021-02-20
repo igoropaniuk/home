@@ -1,0 +1,14 @@
+#!/bin/bash
+
+TORADEXDIR=$HOME/toradex
+
+export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu//bin:$PATH
+export CROSS_COMPILE=aarch64-linux-gnu-
+export ARCH=arm
+
+cp ../imx-scfw/src/scfw_export_mx8qx_b0/mx8qx-apalis-scfw-tcm.bin .
+cp ../imx-atf/build/imx8qx/release/bl31.bin .
+cp ../imx-seco-3.6.3/firmware/seco/mx8qxb0-ahab-container.img mx8qx-ahab-container.img
+
+make apalis-imx8x_defconfig
+make -j4 u-boot-dtb.imx

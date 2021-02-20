@@ -5,7 +5,9 @@ TORADEXDIR=$HOME/toradex
 export CROSS_COMPILE=aarch64-linux-gnu-
 export PATH=$TORADEXDIR/toolchain/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu/bin:$PATH
 
-make colibri_imx7_defconfig
-#make -j1 uImage LOADADDR=10008000
-make -j4 zImage imx7d-colibri-emmc-eval-v3.dtb modules
+export PATH=$TORADEXDIR/reps/u-boot-toradex.git/tools:$PATH
+export ARCH=arm64
+
+make imx_v8_defconfig
+make -j4 Image.gz freescale/imx8mm-verdin-nonwifi-dahlia.dtb modules
 make modules_install INSTALL_MOD_PATH=$TORADEXDIR/nfs/
