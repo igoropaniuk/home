@@ -1,0 +1,11 @@
+uuu_version 1.2.39
+
+SDP: boot -f imx-boot-mfgtool
+# These commands will be run when use SPL and will be skipped if no spl
+# SDPU will be deprecated. please use SDPV instead of SDPU
+SDPU: delay 1000
+SDPV: write -f u-boot-mfgtool.itb
+SDPV: jump
+
+FB: ucmd fuse prog 1 3 0x2000000
+fb: done
